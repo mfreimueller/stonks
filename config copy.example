@@ -1,0 +1,9 @@
+<?php
+
+return [
+    'api_key' => 'PLACE API KEY HERE',
+	'base_directory' => 'path/to/stonks/dir',
+	'debug_email' => true or false, if true, the email gets echoed, instead of sent
+];
+
+// ?>

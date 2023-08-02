@@ -1,0 +1,22 @@
+{
+	"7CD.FRK": {
+		"name": "CD Projekt Red",
+		"volume": 25,
+		"rule": {
+			"price": 100,
+			"operation": "ge"
+		}
+	},
+	"EA": {
+		"name": "Electronic Arts Inc",
+		"volume": 0,
+		"rule": {
+			"price": 25,
+			"operation": "le"
+		}
+	},
+	"UBI.PAR": {
+		"name": "Ubisoft Entertainment",
+		"volume": 0
+	}
+}
