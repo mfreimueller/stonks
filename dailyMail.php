@@ -3,14 +3,17 @@
 include_once 'util.php';
 include_once 'cache.php';
 
-$forceReport = key_exists("forceReport", $_GET) ? (strcmp($_GET["forceReport"], "1") == 0) : false;
+$forceReport = key_exists("force_report", $_GET) ? (strcmp($_GET["force_report"], "1") == 0) : false;
+$skipCacheRebuild = key_exists("skip_cache", $_GET) ? (strcmp($_GET["skip_cache"], "1") == 0) : false;
 
 $shares = getSharesJson();
 $stocksToReport = array();
 
 // forcing a cache refresh.
 // this takes a while, as the API is throttled.
-createCache();
+if (!$skipCacheRebuild) {
+	createCache();
+}
 
 foreach (array_keys($shares) as $shareId) {
 	$share = $shares[$shareId];
@@ -19,7 +22,7 @@ foreach (array_keys($shares) as $shareId) {
 		// first, extract the latest "high" price
 		$dailyShareData = getDailyShareData($shareId);
 
-		$lastRefreshed = $dailyShareData["3. Last Refreshed"];
+		$lastRefreshed = $dailyShareData["Meta Data"]["3. Last Refreshed"];
 		$timeSeries = $dailyShareData["Time Series (Daily)"];
 
 		$lastTimeSeries = $timeSeries[$lastRefreshed];

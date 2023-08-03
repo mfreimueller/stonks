@@ -62,7 +62,7 @@ function sendEmail($stocksToReport)
 
 	$to = 'michael@mfreimueller.com';
 	$subject = '!!! Kurswarnung vom ' . $date . ' !!! | Stonks!™';
-	$message = "Achtung, Achtung!\n\
+	$message = "Achtung, Achtung!\n\n
 				Der Stonks!™-Alert hat angeschlagen, für folgende Kurse:\n";
 	$headers = 'From: mail@mfreimueller.com' . "\r\n" .
 		'Reply-To: mail@mfreimueller.com' . "\r\n" .
