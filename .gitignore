@@ -3,3 +3,4 @@ cache/**
 config.php
 shares.json
 deploy.sh
+knork.json
