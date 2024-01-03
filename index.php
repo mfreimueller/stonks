@@ -5,7 +5,7 @@ $shareIds = getSharesJson();
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="dark">
 
 <head>
 	<meta charset="UTF-8">
@@ -36,6 +36,10 @@ $shareIds = getSharesJson();
 		<div class="row">
 			<div class="col-3">
 				<ul class="nav flex-column">
+					<a class="nav-link" aria-current="page" data-stock="dashboard" href="#">
+						<i class="bi bi-cash-coin"></i>&nbsp;
+						Dashboard
+					</a>
 					<?php
 					foreach (array_keys($shareIds) as $shareId) { ?>
 						<li class="nav-item">
@@ -83,6 +87,11 @@ $shareIds = getSharesJson();
 					<tbody>
 					</tbody>
 				</table>
+			</div>
+			<div class="dashboard col">
+				<div class="dashboard container text-center">
+
+				</div>
 			</div>
 		</div>
 	</div>

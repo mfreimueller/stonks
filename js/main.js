@@ -1,12 +1,22 @@
 function initializeStocks(stockMetaData) {
 	var stockChart = null;
 
+	populateDashboard(stockMetaData);
+
 	$(".nav-link").click(function () {
 		var stockId = $(this).data("stock");
 
+		if (stockId == "dashboard") {
+			$(".main.col").hide();
+			$(".dashboard.col").show();
+			return;
+		} else {
+			$(".main.col").show();
+			$(".dashboard.col").hide();
+		}
+
 		$.get("stocks.php?stock-id=" + stockId, (stockData) => {
 			
-
 			$(".main.col").show();
 
 			const stockMeta = stockMetaData[stockId];
@@ -160,6 +170,73 @@ function initializeStocks(stockMetaData) {
 				},
 			});
 		});
+	});
+}
+
+function populateDashboard(stockMetaData) {
+	// get all stocks where we currently have a volume > 0
+	let heldStocks = [];
+	Object.keys(stockMetaData).forEach(key => {
+		if (stockMetaData[key]["volume"] > 0) {
+			heldStocks.push(key);
+		}
+	});
+
+	function fetchData(remainingStocks, callback) {
+		const stockId = remainingStocks.shift();
+
+		function _callback(array) {
+			$.get("stocks.php?stock-id=" + stockId, (stockData) => {
+				const name = stockMetaData[stockId]["name"];
+				const data = stockData["Time Series (Daily)"];
+				const dates = Object.keys(data);
+
+				// extract latest value to display highlighted
+				const latestDate = data[dates[0]];
+				const highToday = latestDate["2. high"];
+
+				const dayBefore = data[dates[1]];
+				const highBefore = dayBefore["2. high"];
+
+				const diff = (highToday - highBefore).toFixed(3);
+
+				let html = "<div class='tile'>";
+				html += "<strong>" + name + "</strong><br>";
+
+				if (diff > 0) {
+					html += "<span class='green'>" + diff + "</span>";
+				} else if (diff < 0) {
+					html += "<span class='red'>" + diff + "</span>";
+				} else {
+					html += diff;
+				}
+
+				html += "<br><span class='small'>" + highToday + " - " + highBefore + "</span>";
+
+				html += "</div>";
+
+				array.push(html);
+				callback(array);
+			});
+		};
+
+		if (remainingStocks.length > 0) {
+			fetchData(remainingStocks, _callback);
+		} else {
+			_callback([]);
+		}
+	}
+
+	fetchData(heldStocks, stockData => {
+		let html = "<div class='row row-cols-auto'>";
+
+		for (let idx = 0; idx < stockData.length; idx++) {
+			html += "<div class='col'>" + stockData[idx] + "</div>";
+		}
+
+		html += "</div>";
+
+		$(".dashboard.container").append(html);
 	});
 }
 

@@ -4,3 +4,22 @@
 	right: 20px; /* Adjust this value to change the distance from the right */
 	z-index: 9999; /* Ensure the Toast appears above other elements */
 }
+
+.red {
+	color: red;
+}
+
+.green {
+	color: green;
+}
+
+.tile {
+	margin: 16px;
+	font-size: 18px;
+	min-width: 200px;
+}
+
+.tile .small {
+	font-size: 12px;
+	color: gray;
+}
