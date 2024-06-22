@@ -22,6 +22,14 @@ foreach (array_keys($shares) as $shareId) {
 		// first, extract the latest "high" price
 		$dailyShareData = getDailyShareData($shareId);
 
+		if (!key_exists("Meta Data", $dailyShareData)) {
+			error_log("Key 'Meta Data' doesn't exist for " . $shareId);
+			continue;
+		} else if (!key_exists("3. Last Refreshed", $dailyShareData["Meta Data"])) {
+			error_log("Key '3. LastRefreshed' doesn't exist for 'Meta Data' for " . $shareId);
+			continue;
+		}
+
 		$lastRefreshed = $dailyShareData["Meta Data"]["3. Last Refreshed"];
 		$timeSeries = $dailyShareData["Time Series (Daily)"];
 
