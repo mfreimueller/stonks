@@ -16,7 +16,6 @@ function getCachePath() {
 	return getBaseDirectory() . "/cache";
 }
 
-
 function getAPIKey() {
 	global $config;
 	return $config["api_key"];
@@ -42,13 +41,17 @@ function getDailyShareData($symbol, $raw = false, $cache = true) {
 		}
 	} else {
 		$json = file_get_contents('https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=' . $symbol . '&apikey=' . getAPIKey());
+
+		// sometimes we run into the APIs free limit.
+		// in this case, the json doesn't contain the data
+		// we need and thus need to filter out those results.
+		if (strpos($json, "3. Last Refreshed") === false) {
+			error_log("Failed to fetch share data for " . $symbol);
+			return false;
+		}
 	}
 
 	return $raw ? $json : json_decode($json, true);
-}
-
-function writeCache($symbol, $json) {
-	file_put_contents(getCachePath() . "/" . $symbol . ".json", $json);
 }
 
 function now()

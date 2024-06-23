@@ -13,8 +13,16 @@ function createCache() {
 		}
 		
 		$json = getDailyShareData($share, true, false);
-		writeCache($share, $json);
+
+		// write the retrieved json data iff we received valid data.
+		if (json !== false) {
+			writeCache($share, $json);
+		}
 	}
+}
+
+function writeCache($symbol, $json) {
+	file_put_contents(getCachePath() . "/" . $symbol . ".json", $json);
 }
 
 // ?>
