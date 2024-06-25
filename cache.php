@@ -15,7 +15,7 @@ function createCache() {
 		$json = getDailyShareData($share, true, false);
 
 		// write the retrieved json data iff we received valid data.
-		if (json !== false) {
+		if ($json !== false) {
 			writeCache($share, $json);
 		}
 	}
